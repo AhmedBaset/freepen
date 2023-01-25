@@ -1,0 +1,51 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+	body {
+		font-family: 'Nunito', sans-serif;
+	}
+
+	*:focus {
+		outline: none;
+		@apply ring-2 ring-primary-400/50;
+	}
+}
+
+@layer components {
+	.container {
+		@apply mx-auto px-2;
+	}
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+	-webkit-text-fill-color: theme(colors.slate.900);
+	-webkit-box-shadow: 0 0 0px 1000px theme(colors.slate.50) inset;
+	transition: background-color 5000s ease-in-out 0s;
+}
+@media (prefers-color-scheme: dark) {
+	input:-webkit-autofill,
+	input:-webkit-autofill:hover,
+	input:-webkit-autofill:focus,
+	textarea:-webkit-autofill,
+	textarea:-webkit-autofill:hover,
+	textarea:-webkit-autofill:focus,
+	select:-webkit-autofill,
+	select:-webkit-autofill:hover,
+	select:-webkit-autofill:focus {
+		-webkit-text-fill-color: theme(colors.slate.50);
+		-webkit-box-shadow: 0 0 0px 1000px theme(colors.slate.700) inset;
+		transition: background-color 5000s ease-in-out 0s;
+	}
+}
