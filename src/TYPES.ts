@@ -1,9 +1,10 @@
-import { FieldValue } from "firebase/firestore";
+import { FieldValue, Timestamp } from "firebase/firestore";
 
 export type UserInfoProps = {
 	name: string;
 	// userName: string;
 	email: string;
+	subTitle: string;
 	photoURL: string;
 }
 
@@ -12,9 +13,9 @@ export type Blog = {
 	title: string | undefined;
 	body: string | undefined;
 	image: string | undefined;
-	autherId: string | undefined;
+	authorId: string | undefined;
 	blogInfo: {
-		createdAt: FieldValue;
+		createdAt: Timestamp;
 		readsCount: number;
 		likesCount: number;
 		sharesCount: number;

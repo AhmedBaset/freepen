@@ -4,11 +4,12 @@ import Button from "../components/Button";
 
 import UploadImage from "../components/UploadImage";
 import { auth, db } from "../firebase-config";
-import { doc, serverTimestamp, setDoc } from "firebase/firestore";
+import { doc, serverTimestamp, setDoc, Timestamp } from "firebase/firestore";
 import { Blog } from "../TYPES";
 import { useNavigate } from "react-router-dom";
 import { AppContext } from "../Context";
 import openPortal from "../components/Modal";
+import { time } from "console";
 
 function NewBlog() {
 	const [imageLink, setImageLink] = useState("");
@@ -51,9 +52,9 @@ function NewBlog() {
 			title: title.current.value.toString(),
 			body: body.current.value.toString(),
 			image: imageLink,
-			autherId: auth.currentUser?.uid,
+			authorId: auth.currentUser?.uid,
 			blogInfo: {
-				createdAt: serverTimestamp(),
+				createdAt: Timestamp.fromDate(new Date()),
 				readsCount: 0,
 				likesCount: 0,
 				sharesCount: 0,

@@ -44,6 +44,7 @@ function Auth({ type }: { type: "login" | "register" }) {
 							name: auth.user.displayName || "",
 							email: auth.user.email || "",
 							photoURL: auth.user.photoURL || "",
+							subTitle: ""
 						};
 						setDoc(docRef, userInfo).then(() => {
 							navigate("/");
@@ -93,6 +94,7 @@ function Auth({ type }: { type: "login" | "register" }) {
 					name: `${name.first} ${name.last}`,
 					email: createUserData.user.email || "",
 					photoURL: createUserData.user.photoURL || defaultImage,
+					subTitle: ""
 				};
 				try {
 					await setDoc(docRef, userInfo);
