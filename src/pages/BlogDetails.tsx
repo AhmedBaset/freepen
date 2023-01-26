@@ -7,6 +7,7 @@ import Markdown from "react-markdown";
 import { CiCalendarDate, CiHeart, CiRead } from "react-icons/ci";
 import { BsShare } from "react-icons/bs";
 import Button from "../components/Button";
+import { Loading } from "./../App";
 
 function BlogDetails() {
 	const { id } = useParams();
@@ -38,18 +39,20 @@ function BlogDetails() {
 		})();
 	}, []);
 
-	if (!blog) return <h1>Loading...</h1>;
+	if (!blog) return <Loading />;
+
+	let w = window.innerWidth;
 
 	return (
 		<div className="container flex h-full flex-col md:flex-row">
 			{/* The Main Content */}
-			<main className="flex-auto py-4">
+			<main className="flex-auto space-y-2 py-4">
 				{/* Header => Headeing + Image */}
 				<header className="space-y-3">
 					<h1 className="text-2xl font-semibold md:text-5xl">
 						{blog.title}
 					</h1>
-					<p className="flex items-center text-sm font-light opacity-70">
+					<p className="flex items-center gap-2 text-sm font-light opacity-70">
 						<CiCalendarDate /> Written at{" "}
 						{blog.blogInfo.createdAt.toDate().toDateString()}
 					</p>
@@ -58,25 +61,26 @@ function BlogDetails() {
 						className="object-fit object center h-auto max-h-screen w-full rounded shadow"
 						alt={blog.title}
 					/>
+					<h1>{w}</h1>
 				</header>
-				<div className="flex-row items-center justify-between gap-4 lg:flex">
+				<div className="flex flex-col items-center justify-between gap-4 lg:flex-row">
 					{/* Author Info */}
 					{author && (
-						<section className="flex items-center justify-between gap-4 rounded bg-slate-50 p-4 dark:bg-slate-900">
+						<section className="flex items-center justify-between gap-3 rounded bg-slate-50 p-2 dark:bg-slate-900">
 							<img
 								src={author?.photoURL.toString()}
-								className="h-12 w-12 rounded-2xl object-cover md:h-16 md:w-16"
+								className="h-10 w-10 rounded-2xl object-cover md:h-16 md:w-16"
 								alt={author?.photoURL.toString()}
 							/>
 							<div className="flex-auto">
-								<h2 className="text-xl font-medium md:text-2xl">
+								<h2 className="font-medium md:text-2xl">
 									{author?.name}
 								</h2>
 								<p className="text-xs opacity-60 md:text-sm">
 									{author.subTitle}
 								</p>
 							</div>
-							<Button variant="primary" className="rounded-full">
+							<Button variant="primary" className="rounded-full text-xs px-2 py-1">
 								Follow
 							</Button>
 						</section>
@@ -110,7 +114,7 @@ function BlogDetails() {
 					</section>
 				</div>
 				{/* Blog Body */}
-				<article className="prose p-4 prose-code:break-words dark:prose-invert">
+				<article className="[&,_&_*]:!break-words prose py-4 px-1 dark:prose-invert">
 					{blog.body && <Markdown>{blog?.body}</Markdown>}
 				</article>
 			</main>

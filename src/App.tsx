@@ -30,25 +30,6 @@ const NewBlog = lazy(() => import("./pages/NewBlog"));
 const BlogDetails = lazy(() => import("./pages/BlogDetails"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
-// const lazyImport = (path: string) => {
-// 	if (path.includes("default")) {
-// 		return lazy(() => import(path));
-// 	} else {
-// 		return lazy(() =>
-// 			import(path).then((module) => ({ default: module.default }))
-// 		);
-// 	}
-// };
-
-// const Context = lazyImport("./Context");
-// const Root = lazyImport("./pages/Root");
-// const Auth = lazyImport("./pages/Auth");
-// const ConfirmEmail = lazyImport("./pages/ConfirmEmail");
-// const Home = lazyImport("./pages/Home");
-// const NewBlog = lazyImport("./pages/NewBlog");
-// const BlogDetails = lazyImport("./pages/BlogDetails");
-// const NotFound = lazyImport("./pages/NotFound");
-
 function App() {
 	// TODO: HANDLE ROUTERS
 	const router = createBrowserRouter(
@@ -80,7 +61,7 @@ function App() {
 
 export default App;
 
-const Loading = () => {
+export const Loading = () => {
 	return createPortal(
 		<div className="fixed inset-0 z-50 dark:bg-slate-800 flex items-center justify-center">
 			<ImSpinner6 className="animate-spin ease-in-out text-5xl text-primary-500" />
