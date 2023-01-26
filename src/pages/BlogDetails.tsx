@@ -42,7 +42,9 @@ function BlogDetails() {
 
 	return (
 		<div className="container flex h-full flex-col md:flex-row">
+			{/* The Main Content */}
 			<main className="flex-auto py-4">
+				{/* Header => Headeing + Image */}
 				<header className="space-y-3">
 					<h1 className="text-2xl font-semibold md:text-5xl">
 						{blog.title}
@@ -57,9 +59,10 @@ function BlogDetails() {
 						alt={blog.title}
 					/>
 				</header>
-				<div className="lg:flex flex-row gap-4 justify-between items-center">
+				<div className="flex-row items-center justify-between gap-4 lg:flex">
+					{/* Author Info */}
 					{author && (
-						<section className="bg-slate-white flex items-center justify-between gap-4 rounded p-4 dark:bg-slate-800">
+						<section className="flex items-center justify-between gap-4 rounded bg-slate-50 p-4 dark:bg-slate-900">
 							<img
 								src={author?.photoURL.toString()}
 								className="h-12 w-12 rounded-2xl object-cover md:h-16 md:w-16"
@@ -78,6 +81,7 @@ function BlogDetails() {
 							</Button>
 						</section>
 					)}
+					{/* Blog Reactions */}
 					<section className="flex flex-wrap gap-4 divide-x-2 divide-dashed divide-slate-400/50 py-4">
 						<div className="flex flex-auto items-center justify-center gap-4 p-4 text-center">
 							<span className="md:text-3xl">
@@ -105,10 +109,12 @@ function BlogDetails() {
 						</div>
 					</section>
 				</div>
+				{/* Blog Body */}
 				<article className="prose p-4 prose-code:break-words dark:prose-invert">
 					{blog.body && <Markdown>{blog?.body}</Markdown>}
 				</article>
 			</main>
+			{/* The Sidebar */}
 			<aside className="w-full md:w-80">
 				<div className="sticky top-4"></div>
 			</aside>

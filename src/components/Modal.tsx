@@ -22,8 +22,9 @@ function Modal({
 
 	if (!parent) return <></>;
 
-	const closeModal = () =>
+	const closeModal = () => {
 		setModal({ isOpen: false, title: "", children: <></> });
+	};
 
 	return createPortal(
 		<div
@@ -31,18 +32,21 @@ function Modal({
 			style={{ zIndex: 5000 }}
 			onClick={closeModal}
 		>
-			<dialog className="overflow-hidden rounded bg-slate-100 ring-2 ring-slate-400/50 dark:bg-slate-800">
-				<header className="rounded-inherite border-b border-slate-400/50 bg-slate-50 p-2 dark:bg-slate-900 flex items-center justify-between">
+			<div className="w-80 max-w-full overflow-hidden rounded bg-slate-100 ring-2 ring-slate-400/50 dark:bg-slate-800 dark:text-white">
+				<header className="rounded-inherite flex items-center justify-between border-b border-dashed border-slate-400/50 bg-slate-50 p-4 dark:bg-slate-900">
 					<h1 className="text-2xl font-bold">{title}</h1>
-					<AiOutlineClose onClick={closeModal} />
+					<AiOutlineClose
+						onClick={closeModal}
+						className="cursor-pointer"
+					/>
 				</header>
-				<section className="overflow-auto">{children}</section>
-				<footer className="rounded-inherite border-b border-slate-400/50 bg-slate-50 p-2 dark:bg-slate-900">
+				<section className="overflow-auto p-4">{children}</section>
+				<footer className="rounded-inherite border-b border-slate-400/50 bg-slate-50 p-4 dark:bg-slate-900">
 					<Button onClick={closeModal} variant="primary">
 						OK
 					</Button>
 				</footer>
-			</dialog>
+			</div>
 		</div>,
 		parent
 	);

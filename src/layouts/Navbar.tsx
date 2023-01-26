@@ -51,7 +51,7 @@ function Navbar() {
 
 			<div className={`z-40 fixed top-12 left-1/2 translate-x-[-50%] container flex justify-end p-4 ${menuExpand ? "pointer-events-auto": "pointer-events-none"}`}>
 				<ul
-					className="w-[500px] max-w-full bg-slate-200 text-slate-800 dark:bg-slate-900 dark:text-white shadow-md p-4 divide-y-2 divide-transparent transition-[clip-path] duration-300"
+					className="w-[500px] max-w-full bg-white text-slate-800 dark:bg-slate-900 dark:text-white shadow shadow-slate-400/50 rounded p-4 divide-y-2 divide-transparent transition-[clip-path] duration-300"
 					style={{
 						clipPath: `circle(${menuExpand ? "200%" : "0"} at 100% 0%)`,
 					}}

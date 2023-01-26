@@ -20,7 +20,7 @@ export const AppContext = createContext<ContextProps>({
 	notifications: [],
 	setNotifications: () => null,
 	newError: (error: any) => null,
-	openModal: (title: string, children: JSX.Element) => null,	
+	openModal: (title: string, children: JSX.Element) => null,
 });
 
 type Props = {
@@ -34,6 +34,10 @@ function Context({ children }: Props) {
 		title: "",
 		children: <></>,
 	});
+
+	React.useEffect(() => {
+		console.log(`Modal is ${modal.isOpen ? "open" : "closed"}`)
+	}, [modal.isOpen]);
 
 	onAuthStateChanged(auth, async () => {
 		if (auth?.currentUser?.uid) {
@@ -60,16 +64,22 @@ function Context({ children }: Props) {
 	return (
 		<>
 			<AppContext.Provider
-				value={{ userInfo, notifications, setNotifications, newError, openModal }}
+				value={{
+					userInfo,
+					notifications,
+					setNotifications,
+					newError,
+					openModal,
+				}}
 			>
 				{children}
 			</AppContext.Provider>
 			{/* {modal.isOpen && <Modal title={modal.title} children={modal.children} setModal={ setModal} />} */}
-			{modal.isOpen && (
+			{modal.isOpen ? (
 				<Modal title={modal.title} setModal={setModal}>
 					{modal.children}
 				</Modal>
-			)}
+			) : null}
 		</>
 	);
 }

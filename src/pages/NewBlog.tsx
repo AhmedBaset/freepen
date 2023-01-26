@@ -4,12 +4,10 @@ import Button from "../components/Button";
 
 import UploadImage from "../components/UploadImage";
 import { auth, db } from "../firebase-config";
-import { doc, serverTimestamp, setDoc, Timestamp } from "firebase/firestore";
+import { doc, setDoc, Timestamp } from "firebase/firestore";
 import { Blog } from "../TYPES";
 import { useNavigate } from "react-router-dom";
 import { AppContext } from "../Context";
-import openPortal from "../components/Modal";
-import { time } from "console";
 
 function NewBlog() {
 	const [imageLink, setImageLink] = useState("");
@@ -20,10 +18,12 @@ function NewBlog() {
 
 	const id = `${Math.random().toString(32).substring(2, 12)}`;
 
+	React.useEffect(() => { 
+		openModal("New Blog", <p>Create a new blog</p>);
+	}, [])
+
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
-
-		if (!title.current || !body.current) return;
 
 		if (!imageLink) {
 			openModal(
@@ -86,7 +86,13 @@ function NewBlog() {
 						ref={title}
 						className="min-h-40 h-[calc(1em+2rem)] max-h-[calc(2em+2rem)] w-full resize-none overflow-auto rounded border border-dashed border-slate-400/50 bg-transparent p-4 text-center text-5xl font-bold focus:ring-0 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-slate-400/50 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-primary-500"
 						onInput={(element) => {
-							element.currentTarget.style.height = `${element.currentTarget.scrollHeight}px`;
+							let lineHeight = 16 * 3 // fontSize * lineHeight
+							var height = element.currentTarget.scrollHeight; // get the height of the text area
+							element.currentTarget.style.height = lineHeight + "px"; // set the height to 3 lines of text
+							var numberOfLines = Math.floor(height / lineHeight);
+							element.currentTarget.style.height = `${
+								numberOfLines * lineHeight + 32 // add 16 + 16px for padding top and bottom
+							}px`;
 						}}
 					></textarea>
 
