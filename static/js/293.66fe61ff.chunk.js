@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkfreepen=self.webpackChunkfreepen||[]).push([[293],{4293:function(e,n,r){r.r(n);var t=r(6459),u=r(2791),c=r(1087),o=r(184);function i(e){return(0,t.Z)(e),(0,o.jsxs)("div",{className:"container",children:[(0,o.jsx)("h1",{children:"Home"}),(0,o.jsx)(c.rU,{to:"/new",children:"New Blog"})]})}n.default=u.memo(i)},6459:function(e,n,r){function t(e){if(null==e)throw new TypeError("Cannot destructure "+e)}r.d(n,{Z:function(){return t}})}}]);
+//# sourceMappingURL=293.66fe61ff.chunk.js.map

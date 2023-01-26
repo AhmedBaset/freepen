@@ -1,0 +1,7 @@
+//! import { useNotification } from "../Hooks/useNotification";
+
+//! newNotification("error", err.message, <BiErrorCircle />, null)
+
+//! newNotification("success", "Welcome back! Signed in successfully", <AiOutlineUserSwitch />, null)
+
+//! newNotification("success", "Welcome back! Signed in successfully", <AiOutlineUserSwitch />, null);
