@@ -69,7 +69,7 @@ function BlogDetails() {
 								alt={author?.photoURL.toString()}
 							/>
 							<div className="flex-auto">
-								<h2 className="text-xl font-medium md:text-2xl md:text-xl">
+								<h2 className="text-xl font-medium md:text-2xl">
 									{author?.name}
 								</h2>
 								<p className="text-xs opacity-60 md:text-sm">
