@@ -51,11 +51,18 @@ function BlogDetails() {
 						<CiCalendarDate /> Written at{" "}
 						{blog.blogInfo.createdAt.toDate().toDateString()}
 					</p>
-					<img
-						src={blog.image}
-						className="object-fit object center h-auto max-h-screen w-full rounded shadow"
-						alt={blog.title}
-					/>
+					<div className="h-auto max-h-[60vh] w-full rounded shadow relative overflow-hidden">
+						<img
+							src={blog.image}
+							className="object-cover object-center rounded blur-lg z-10 absolute inset-0"
+							alt={blog.title}
+						/>
+						<img
+							src={blog.image}
+							className="object-contain h-full w-full rounded object-center z-20 relative"
+							alt={blog.title}
+						/>
+					</div>
 				</header>
 				<div className="flex flex-col items-center justify-between gap-4 lg:flex-row">
 					{/* Author Info */}
