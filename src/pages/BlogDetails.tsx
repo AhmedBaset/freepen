@@ -8,6 +8,7 @@ import { CiCalendarDate, CiHeart, CiRead } from "react-icons/ci";
 import { BsShare } from "react-icons/bs";
 import Button from "../components/Button";
 import { Loading } from "./../App";
+import remarkGfm from "remark-gfm";
 
 function BlogDetails() {
 	const { id } = useParams();
@@ -22,14 +23,10 @@ function BlogDetails() {
 			try {
 				const docRef = doc(collection(db, "blogs"), id);
 				const blogSnapshoot = await getDoc(docRef);
-
 				if (!blogSnapshoot.exists()) return; // setError("No such document!");
-
 				setBlog(() => blogSnapshoot.data() as Blog);
-
 				const authorRef = doc(db, "users", blogSnapshoot.data().authorId);
 				const authorSnapshoot = await getDoc(authorRef);
-
 				if (!authorSnapshoot.exists()) return; // setError("No such document!");
 				setAuthor(() => authorSnapshoot.data() as UserInfoProps);
 			} catch (error: any) {
@@ -39,9 +36,7 @@ function BlogDetails() {
 		})();
 	}, []);
 
-	if (!blog) return <Loading />;
-
-	let w = window.innerWidth;
+	if (!blog?.body) return <Loading />;
 
 	return (
 		<div className="container flex h-full flex-col md:flex-row">
@@ -61,7 +56,6 @@ function BlogDetails() {
 						className="object-fit object center h-auto max-h-screen w-full rounded shadow"
 						alt={blog.title}
 					/>
-					<h1>{w}</h1>
 				</header>
 				<div className="flex flex-col items-center justify-between gap-4 lg:flex-row">
 					{/* Author Info */}
@@ -80,7 +74,10 @@ function BlogDetails() {
 									{author.subTitle}
 								</p>
 							</div>
-							<Button variant="primary" className="rounded-full text-xs px-2 py-1">
+							<Button
+								variant="primary"
+								className="rounded-full px-2 py-1 text-xs"
+							>
 								Follow
 							</Button>
 						</section>
@@ -114,8 +111,16 @@ function BlogDetails() {
 					</section>
 				</div>
 				{/* Blog Body */}
-				<article className="[&,_&_*]:!break-words prose py-4 px-1 dark:prose-invert">
-					{blog.body && <Markdown>{blog?.body}</Markdown>}
+				<article className="prose py-4 px-1">
+					<Markdown
+						children={blog.body}
+						remarkPlugins={[remarkGfm]}
+						components={{
+							a: ({ node, ...props }) => (
+								<a {...props} target="_blank" />
+							),
+						}}
+					/>
 				</article>
 			</main>
 			{/* The Sidebar */}
