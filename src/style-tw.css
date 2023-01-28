@@ -24,12 +24,14 @@
 		@apply prose-headings:mb-2 prose-headings:mt-4 prose-headings:font-semibold 
 			prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl prose-h4:text-lg prose-h5:text-base prose-h6:text-sm 
 			prose-a:font-medium prose-a:text-primary-500 prose-a:no-underline prose-a:hover:underline prose-a:hover:decoration-primary-500 prose-a:hover:decoration-wavy 
-			prose-blockquote:border-slate-400/70
+			prose-blockquote:border-slate-400/70 prose-blockquote:text-center prose-blockquote:font-["cursive"]
+			[&:has(:where(h1,h2,h3,h4,h5,h6,p,li,span))_code]:bg-white [&:has(:where(h1,h2,h3,h4,h5,h6,p,li,span))_code]:rounded [&:has(:where(h1,h2,h3,h4,h5,h6,p,li,span))_code]:p-1 dark:[&:has(:where(h1,h2,h3,h4,h5,h6,p,li,span))_code]:bg-slate-900
 			prose-table:table-auto
 			dark:prose-invert  
 			[&,_&_*]:!break-words;
 	}
 }
+
 
 input:-webkit-autofill,
 input:-webkit-autofill:hover,

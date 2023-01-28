@@ -1,20 +1,36 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
-  "icons": [
+	"short_name": "freepen",
+	"name": "Free Pen: free space for your thoughts",
+	"icons": [
 		{
-			"src": "/android-chrome-192x192.png",
-			"sizes": "192x192",
+			"src": "./favicon-16.png",
+			"sizes": "16x16",
 			"type": "image/png"
 		},
 		{
-			"src": "/android-chrome-512x512.png",
+			"src": "./favicon-32.png",
+			"sizes": "32x32",
+			"type": "image/png"
+		},
+		{
+			"src": "./favicon-192.png",
+			"sizes": "128x128",
+			"type": "image/png"
+		},
+		{
+			"src": "./favicon-512.png",
 			"sizes": "512x512",
 			"type": "image/png"
 		}
 	],
 	"theme_color": "#ffffff",
 	"background_color": "#ffffff",
-  "start_url": ".",
-  "display": "standalone"
+	"start_url": ".",
+	"display": "standalone",
+	"apple": {
+		"statusBarStyle": "black-translucent",
+		"touchIcon": "./apple.png",
+		"touchIconPrecomposed": "./apple.png",
+		"startupImage": "./favicon-512.png"
+	}
 }

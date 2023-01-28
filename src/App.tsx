@@ -7,13 +7,7 @@ import {
 	RouterProvider,
 } from "react-router-dom";
 import { ImSpinner6 } from "react-icons/im";
-// import Context from "./Context";
-// import Auth, { ConfirmEmail } from "./pages/Auth";
-// import Home from "./pages/Home";
-// import NewBlog from "./pages/NewBlog";
-// import BlogDetails from "./pages/BlogDetails";
-// import NotFound from "./pages/NotFound";
-// import Root from "./pages/Root";
+
 
 import { lazy } from "react";
 

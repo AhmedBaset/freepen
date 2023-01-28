@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "../components/Button";
 import { auth } from "../firebase-config";
 import { AiOutlineLogin, AiOutlineUserAdd } from "react-icons/ai";
@@ -11,9 +11,11 @@ function CheckAuthentication({ children }: Props): JSX.Element {
 	const [isAuth, setIsAuth] = useState<Boolean | "loading">("loading");
 	const navigate = useNavigate();
 
-	onAuthStateChanged(auth, (user) => {
-		setIsAuth(() => Boolean(user));
-	});
+	useEffect(() => {
+		onAuthStateChanged(auth, (user) => {
+			setIsAuth(() => Boolean(user));
+		});
+	}, []);
 
 	if (isAuth) {
 		return <>{children}</>;

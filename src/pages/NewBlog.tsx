@@ -1,4 +1,4 @@
-import React, { useState, memo, useContext, useRef, useCallback } from "react";
+import React, { useState, memo, useContext, useRef } from "react";
 import CheckAuthentication from "./../HOCs/CheckAuthentication";
 import Button from "../components/Button";
 
@@ -8,8 +8,7 @@ import { doc, setDoc, Timestamp } from "firebase/firestore";
 import { Blog } from "../TYPES";
 import { useNavigate } from "react-router-dom";
 import { AppContext } from "../Context";
-import MarkdownEditor from "react-simplemde-editor";
-import "easymde/dist/easymde.min.css";
+import MdEditor from "../components/MdEditor";
 
 function NewBlog() {
 	const [imageLink, setImageLink] = useState("");
@@ -19,15 +18,7 @@ function NewBlog() {
 	const { newError, openModal } = useContext(AppContext);
 	const [blogBody, setBlogBody] = useState("Initial value");
 
-	const onBlogBodyChange = useCallback((value: string) => {
-		setBlogBody(value);
-	}, []);
-
 	const id = `${Math.random().toString(32).substring(2, 12)}`;
-
-	React.useEffect(() => {
-		openModal("New Blog", <p>Create a new blog</p>);
-	}, []);
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
@@ -103,26 +94,23 @@ function NewBlog() {
 						}}
 					></textarea>
 
-					<UploadImage id={id} setImageLink={setImageLink} />
+					<UploadImage
+						path="blogsThumbnails"
+						name={id}
+						onSuccess={(url) => setImageLink(url)}
+					/>
 
-					<MarkdownEditor
+					<MdEditor
 						value={blogBody}
-						onChange={onBlogBodyChange}
-						options={{
-							autofocus: true,
-							autosave: {
-								enabled: true,
-								uniqueId: "MyUniqueID",
-								delay: 1000,
-							},
-						}}
+						setValue={setBlogBody}
+						className="h-auto min-h-[40vh] flex-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-slate-400/50 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-primary-500"
 					/>
 
 					{/* <textarea
 						required={true}
 						placeholder="Write here"
 						ref={body}
-						className="h-auto min-h-[40vh] w-full flex-auto resize-none rounded border border-dashed border-slate-400/50 bg-transparent p-4 text-xl focus:ring-0 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-slate-400/50 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-primary-500"
+						className="h-auto min-h-[50vh] w-full flex-auto resize-none rounded border border-dashed border-slate-400/50 bg-transparent p-4 text-xl focus:ring-0 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-slate-400/50 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-primary-500"
 						onInput={(el) => {
 							el.currentTarget.style.height = "auto";
 							el.currentTarget.style.height = `${el.currentTarget.scrollHeight}px`;

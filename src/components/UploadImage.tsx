@@ -28,12 +28,17 @@ type ImageStateProps = {
 };
 
 function UploadImage({
-	id,
-	setImageLink,
+	path,
+	name,
+	onLoading,
+	onSuccess,
 }: {
-	id: string;
-	setImageLink: Dispatch<SetStateAction<string>>;
+	path: string;
+	name: string;
+	onLoading?: () => void;
+	onSuccess?: (url: string) => void;
 }) {
+	const [imageLink, setImageLink] = useState("");
 	const [imageState, setImageState] = useState<ImageStateProps>({
 		state: ImageStateLevel.waitImage,
 		progress: 0,
@@ -46,10 +51,11 @@ function UploadImage({
 
 	useEffect(() => {
 		setImageLink(() => imageState.url);
+		if (imageState.url) onSuccess && onSuccess(imageState.url);
 	}, [imageState.url]);
 
 	async function uploadImage() {
-		const pathRef = ref(storage, `blogsThumbnails/${id}`);
+		const pathRef = ref(storage, `${path}/${name}`);
 
 		if (!imageRef.current.files) return;
 
@@ -71,6 +77,7 @@ function UploadImage({
 					url: "",
 					details: "",
 				}));
+				onLoading && onLoading();
 			},
 			(err) => {
 				setImageState((v) => ({
@@ -90,6 +97,7 @@ function UploadImage({
 							url,
 							details: "Uploaded",
 						}));
+						onSuccess && onSuccess(url);
 					})
 					.catch((err) => {
 						newError(err || { message: "Error while getting image url" });
@@ -110,7 +118,7 @@ function UploadImage({
 				<Button className="relative w-full">
 					<span className="pointer-events-none flex items-center gap-3">
 						<BiImageAdd className="text-lg text-primary-500" /> Upload
-						Thumbnail Image
+						Image
 					</span>
 					<input
 						type="file"

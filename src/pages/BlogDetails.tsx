@@ -3,12 +3,11 @@ import { collection, doc, getDoc } from "firebase/firestore";
 import { useParams } from "react-router-dom";
 import { db } from "../firebase-config";
 import { Blog, UserInfoProps } from "../TYPES";
-import Markdown from "react-markdown";
 import { CiCalendarDate, CiHeart, CiRead } from "react-icons/ci";
 import { BsShare } from "react-icons/bs";
 import Button from "../components/Button";
 import { Loading } from "./../App";
-import remarkGfm from "remark-gfm";
+import { marked } from "marked";
 
 function BlogDetails() {
 	const { id } = useParams();
@@ -51,15 +50,15 @@ function BlogDetails() {
 						<CiCalendarDate /> Written at{" "}
 						{blog.blogInfo.createdAt.toDate().toDateString()}
 					</p>
-					<div className="h-auto max-h-[60vh] w-full rounded shadow relative overflow-hidden">
+					<div className="relative h-52 max-h-[60vh] overflow-hidden rounded shadow lg:h-96">
 						<img
 							src={blog.image}
-							className="object-cover object-center rounded blur-lg z-10 absolute inset-0"
+							className="absolute inset-0 z-10 rounded object-cover object-center blur-lg"
 							alt={blog.title}
 						/>
 						<img
 							src={blog.image}
-							className="object-contain h-full w-full rounded object-center z-20 relative"
+							className="relative z-20 h-full w-full rounded object-contain object-center"
 							alt={blog.title}
 						/>
 					</div>
@@ -118,7 +117,13 @@ function BlogDetails() {
 					</section>
 				</div>
 				{/* Blog Body */}
-				<article className="prose py-4 px-1">
+				<article
+					className="prose py-4 px-1"
+					dangerouslySetInnerHTML={{
+						__html: marked(blog.body.replace(/<(.+)>/gm, "")),
+					}}
+				/>
+				{/* <article className="prose py-4 px-1">
 					<Markdown
 						children={blog.body}
 						remarkPlugins={[remarkGfm]}
@@ -128,7 +133,7 @@ function BlogDetails() {
 							),
 						}}
 					/>
-				</article>
+				</article> */}
 			</main>
 			{/* The Sidebar */}
 			<aside className="w-full md:w-80">
