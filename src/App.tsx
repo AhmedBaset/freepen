@@ -1,15 +1,15 @@
-import { Suspense } from "react";
+import { Suspense, lazy } from "react";
 import { createPortal } from "react-dom";
 import {
 	createBrowserRouter,
 	createRoutesFromElements,
+	Navigate,
 	Route,
 	RouterProvider,
 } from "react-router-dom";
 import { ImSpinner6 } from "react-icons/im";
-
-
-import { lazy } from "react";
+import { auth, db } from "./firebase-config";
+import { doc, getDoc } from "firebase/firestore";
 
 const Context = lazy(() => import("./Context"));
 const Root = lazy(() => import("./pages/Root"));
@@ -34,9 +34,13 @@ function App() {
 				<Route path="login" element={<Auth type="login" />} />
 				<Route path="register" element={<Auth type="register" />} />
 				<Route path="EmailVerifying" element={<ConfirmEmail />} />
-				<Route path="profile" element={<Profile />} />
-				<Route path="profile/:id" element={<Profile />} />
-				<Route path="user/:id" element={<Profile />} />
+				<Route
+					path="profile"
+					element={<Navigate to={`/profile/${getUserName()}`} />}
+				/>
+				<Route path="profile/:userName" element={<Profile />} />
+				<Route path="user/:userName" element={<Profile />} />
+				<Route path="blogger/:userName" element={<Profile />} />
 				<Route path="new" element={<NewBlog />} />
 
 				<Route path="blog">
@@ -59,10 +63,17 @@ function App() {
 
 export default App;
 
+const getUserName = async () => {
+	if (!auth.currentUser) return undefined;
+	const docRef = doc(db, "users", auth.currentUser.uid);
+	const docSnap = await getDoc(docRef);
+	return docSnap.data()?.userName;
+};
+
 export const Loading = () => {
 	return createPortal(
-		<div className="fixed inset-0 z-50 dark:bg-slate-800 flex items-center justify-center">
-			<ImSpinner6 className="animate-spin ease-in-out text-5xl text-primary-500" />
+		<div className="fixed inset-0 z-50 flex items-center justify-center dark:bg-slate-800">
+			<ImSpinner6 className="animate-spin text-5xl text-primary-500 ease-in-out" />
 		</div>,
 		document.getElementById("portal")!
 	);
