@@ -32,7 +32,7 @@ function Modal({
 		<div
 			className="portal fixed inset-0 flex items-center justify-center p-4 backdrop-blur-xl"
 			style={{ zIndex: 5000 }}
-			onClick={() => closeModal()}
+			// onClick={() => closeModal()}
 		>
 			<div className="w-80 max-w-full overflow-hidden rounded bg-slate-100 ring-2 ring-slate-400/50 dark:bg-slate-800 dark:text-white">
 				<header className="rounded-inherite flex items-center justify-between border-b border-dashed border-slate-400/50 bg-slate-50 p-4 dark:bg-slate-900">

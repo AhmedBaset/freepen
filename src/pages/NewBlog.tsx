@@ -16,7 +16,9 @@ function NewBlog() {
 	const body = useRef() as React.MutableRefObject<HTMLTextAreaElement>;
 	const navigate = useNavigate();
 	const { newError, openModal } = useContext(AppContext);
-	const [blogBody, setBlogBody] = useState("Initial value");
+	const [blogBody, setBlogBody] = useState(
+		`# ${title.current?.value || "Title"} \n \n Good writing...`
+	);
 
 	const id = `${Math.random().toString(32).substring(2, 12)}`;
 
@@ -74,13 +76,15 @@ function NewBlog() {
 	return (
 		<CheckAuthentication>
 			<main className="flex min-h-full">
-				<form
-					className="container flex min-h-full flex-auto flex-col space-y-2 py-4"
-					onSubmit={handleSubmit}
-				>
+				<div className="container flex min-h-full flex-auto flex-col space-y-2 py-4">
 					<textarea
 						required={true}
 						placeholder="Title"
+						onChange={(e) => {
+							setBlogBody(
+								`# ${e.target.value || "Title"} \n \n Good writing...`
+							);
+						}}
 						ref={title}
 						className="min-h-40 h-[calc(1em+2rem)] max-h-[calc(2em+2rem)] w-full resize-none overflow-auto rounded border border-dashed border-slate-400/50 bg-transparent p-4 text-center text-5xl font-bold focus:ring-0 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-slate-400/50 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-primary-500"
 						onInput={(element) => {
@@ -116,10 +120,14 @@ function NewBlog() {
 							el.currentTarget.style.height = `${el.currentTarget.scrollHeight}px`;
 						}}
 					></textarea> */}
-					<Button variant="primary" className="w-full" type="submit">
+					<Button
+						variant="primary"
+						className="w-full"
+						onClick={handleSubmit}
+					>
 						Publish the blog
 					</Button>
-				</form>
+				</div>
 			</main>
 		</CheckAuthentication>
 	);

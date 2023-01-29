@@ -1,5 +1,5 @@
 import React, { MutableRefObject, useContext, useRef, useState } from "react";
-import { marked } from "marked";
+import { marked, Renderer } from "marked";
 import { sanitize } from "./../HOCs/sanitize";
 import { BiHide, BiShowAlt } from "react-icons/bi";
 import {
@@ -30,29 +30,32 @@ type Props = {
 export default function MdEditor({ value, setValue, className }: Props) {
 	const [isPreview, setIsPreview] = useState(true);
 	const textarea = useRef() as MutableRefObject<HTMLTextAreaElement>;
-	const [moreOptions, setMoreOptions] = useState<JSX.Element | null>();
+	const [moreOptions, setMoreOptions] = useState<null | JSX.Element>(null);
 
-	const { openModal } = useContext(AppContext);
+	// TODO: Disable auto link in marked
+	const renderer = new Renderer();
+	renderer.link = (href, title, text) => {
+		return `<a href="${href}" title="${title}">${text}</a>`;
+	};
 
 	marked.setOptions({
 		gfm: true,
 		breaks: true,
+		smartLists: true,
+		smartypants: true,
+		renderer: renderer
 	});
 
 	const text = marked(sanitize(value));
 
-	const handleLink = (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-
-		setValue(
-			(val) => val + `[${e.currentTarget.link}](${e.currentTarget.text})`
-		);
-		setMoreOptions(null);
-	};
-
 	return (
-		<div className={`grid-cols-2 md:grid ${className}`}>
-			<div className="relative flex flex-col overflow-hidden rounded border border-dashed border-slate-400/50">
+		<div className={`grid grid-cols-1 gap-2 md:grid-cols-3 ${className}`}>
+			{/* Editor */}
+			<div
+				className={`relative col-span-2 flex flex-col overflow-hidden rounded border border-dashed border-slate-400/50 ${
+					!isPreview && "col-span-3"
+				}`}
+			>
 				{/* Options */}
 				<div className="sticky top-0 left-0 z-10 w-full bg-slate-100 px-3 py-1 font-bold dark:bg-slate-700">
 					<div className="flex items-center justify-start gap-3 [&>svg]:h-6 [&>svg]:cursor-pointer [&>svg:hover]:text-primary-500">
@@ -90,20 +93,17 @@ export default function MdEditor({ value, setValue, className }: Props) {
 							title="Image"
 							onClick={() => {
 								setMoreOptions(
-									<div className="py-2">
-										<UploadImage
-											path="images"
-											name={`${Math.random().toString(32).slice(2)}`}
-											onLoading={() => {
-												return <Loading />;
-											}}
-											onSuccess={(url) => {
-												console.log(url);
-												setValue((val) => val + `![Image](${url})`);
-												setMoreOptions(null);
-											}}
-										/>
-									</div>
+									<UploadImage
+										path="images"
+										name={`${Math.random().toString(32).slice(2)}`}
+										onLoading={() => {
+											return <Loading />;
+										}}
+										onSuccess={(url) => {
+											setValue((val) => val + `![Image](${url})`);
+											setMoreOptions(null);
+										}}
+									/>
 								);
 							}}
 						/>
@@ -112,27 +112,36 @@ export default function MdEditor({ value, setValue, className }: Props) {
 							onClick={() => {
 								setMoreOptions(
 									<form
-										className="flex flex-col gap-2 py-2"
-										onSubmit={handleLink}
+										className="space-y-2"
+										onSubmit={(e) => {
+											e.preventDefault();
+											const data = new FormData(
+												e.target as HTMLFormElement
+											);
+											setValue(
+												(val) =>
+													val +
+													` [${data.get("text")}](${data.get(
+														"link"
+													)}) `
+											);
+											setMoreOptions(null);
+										}}
 									>
-										<input
-											name="link"
-											className="w-full rounded bg-white p-2 py-1 font-normal dark:bg-slate-900"
-											defaultValue="https://"
+										<Input
 											placeholder="Link"
+											name="link"
+											defaultValue="https://www.example.com"
+											icon={<BsLink45Deg />}
 										/>
-										<input
-											name="text"
-											className="w-full rounded bg-white p-2 py-1 font-normal dark:bg-slate-900"
-											defaultValue="Link text"
+										<Input
 											placeholder="Text"
+											name="text"
+											defaultValue="read more"
+											icon={<BsTypeItalic />}
 										/>
-										<Button
-											className="w-full"
-											variant="primary"
-											type="submit"
-										>
-											Add
+										<Button variant="primary" type="submit">
+											Add Link
 										</Button>
 									</form>
 								);
@@ -159,7 +168,6 @@ export default function MdEditor({ value, setValue, className }: Props) {
 						<BsUiChecks
 							title="Checks list"
 							onClick={() => {
-								console.log(value);
 								setValue(
 									(val) => val + `\n- [x] Done.\n- [ ] Not Yet.\n`
 								);
@@ -168,7 +176,6 @@ export default function MdEditor({ value, setValue, className }: Props) {
 						<BsChatRightQuote
 							title="Quote"
 							onClick={() => {
-								console.log(value);
 								setValue((val) => val + `\n> Text.\n`);
 							}}
 						/>
@@ -180,13 +187,14 @@ export default function MdEditor({ value, setValue, className }: Props) {
 							/>
 						)}
 					</div>
-					{moreOptions && <div>{moreOptions}</div>}
+					{moreOptions && <div className="py-2">{moreOptions}</div>}
 				</div>
 				{/* Text input */}
 				<textarea
 					className="h-full min-h-[50vh] w-full flex-auto resize-none border-none bg-transparent p-2"
 					value={value}
 					onChange={(e) => setValue(e.target.value)}
+					onClick={() => setMoreOptions(null)}
 					ref={textarea}
 					onInput={(el) => {
 						el.currentTarget.style.height = `${el.currentTarget.scrollHeight}px`;
@@ -196,7 +204,7 @@ export default function MdEditor({ value, setValue, className }: Props) {
 			{/* Preview */}
 			{isPreview && (
 				<div className="overflow-hidden rounded border border-dashed border-slate-400/50 bg-transparent">
-					<header className="flex items-center justify-between bg-slate-100 px-3 py-1 font-bold dark:bg-slate-700">
+					<header className="flex items-center justify-between bg-slate-100 px-3 py-1 font-bold dark:bg-slate-700  [&>svg]:h-6 [&>svg]:cursor-pointer [&>svg:hover]:text-primary-500">
 						<span>Preview:</span>
 						<BiHide
 							title="Show Preview"
@@ -208,7 +216,7 @@ export default function MdEditor({ value, setValue, className }: Props) {
 							// __html: marked.parse(value.replace(/(<.+>)/gm, "`$1`")),
 							__html: text,
 						}}
-						className="prose p-2"
+						className="prose prose-sm h-full p-2"
 						onClick={() => textarea.current.focus()}
 					></div>
 				</div>

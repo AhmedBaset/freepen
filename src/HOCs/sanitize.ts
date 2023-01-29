@@ -2,7 +2,6 @@ export const sanitize = (value: string) => {
 	const symbols: { [Key: string]: string } = {
 		"&": "&amp;",
 		"<": "&lt;",
-		">": "&gt;",
 		'"': "&quot;",
 		"'": "&#x27;",
 		"/": "&#x2F;",
@@ -11,7 +10,7 @@ export const sanitize = (value: string) => {
 		"=": "&#x3D;",
 	};
 
-	const regex = /[&<>"'/\\`=]/gm;
+	const regex = /[&<"'/\\`=]/gm;
 
 	return value.replace(regex, (symbol) => symbols[symbol]);
 };
