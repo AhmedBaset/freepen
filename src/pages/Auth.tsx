@@ -27,24 +27,31 @@ function Auth({ type }: { type: "login" | "register" }) {
 	const [name, setName] = useState({ first: "", last: "" });
 	const navigate = useNavigate();
 
-
 	//! const { newNotification } = useNotification();
 
 	// TODO: SIGN IN WITH GOOGLE
 	const SIGN_IN_WITH_GOOGLE = () => {
 		const provider = new GoogleAuthProvider();
 		signInWithPopup(auth, provider)
-			.then((auth) => {
+			.then(async (auth) => {
 				//! newNotification("success", "Welcome back! Signed in successfully", <AiOutlineUserSwitch />, null)
-
+				const defaultCoverImage = await getDownloadURL(
+					ref(storage, "users/coverDefault.png")
+				);
 				const docRef = doc(db, "users", auth?.user?.uid);
 				getDoc(docRef).then((snapShot) => {
 					if (!snapShot.exists()) {
 						const userInfo: UserInfoProps = {
+							uid: auth.user.uid,
 							name: auth.user.displayName || "",
 							email: auth.user.email || "",
+							userName: `@${auth.user.displayName
+								?.split(" ")
+								.join("_")}_${Math.random().toString(32).slice(2)}`,
 							photoURL: auth.user.photoURL || "",
-							subTitle: ""
+							subTitle: "",
+							bio: "",
+							coverPhotoURL: defaultCoverImage,
 						};
 						setDoc(docRef, userInfo).then(() => {
 							navigate("/");
@@ -83,18 +90,29 @@ function Auth({ type }: { type: "login" | "register" }) {
 				password
 			);
 
-			const defaultImage = await getDownloadURL(ref(storage, "users/default.png"))
-			
+			const defaultImage = await getDownloadURL(
+				ref(storage, "users/default.png")
+			);
+			const defaultCoverImage = await getDownloadURL(
+				ref(storage, "users/coverDefault.png")
+			);
+
 			//! newNotification("success", "Welcome back! Signed in successfully", <AiOutlineUserSwitch />, null);
 
 			const docRef = doc(db, "users", createUserData?.user?.uid);
 			const snapShot = await getDoc(docRef);
 			if (!snapShot.exists()) {
 				const userInfo: UserInfoProps = {
+					uid: createUserData.user.uid,
 					name: `${name.first} ${name.last}`,
 					email: createUserData.user.email || "",
 					photoURL: createUserData.user.photoURL || defaultImage,
-					subTitle: ""
+					userName: `${name.first.toLowerCase()}_${name.last.toLowerCase()}_${Math.random()
+						.toString(32)
+						.slice(2)}`,
+					subTitle: "",
+					bio: "",
+					coverPhotoURL: defaultCoverImage,
 				};
 				try {
 					await setDoc(docRef, userInfo);
@@ -116,12 +134,12 @@ function Auth({ type }: { type: "login" | "register" }) {
 
 	// TODO: RETURN JSX
 	return (
-		<main className="h-full flex justify-center items-center">
-			<section className="w-[500px] max-w-full bg-white rounded-lg shadow ring-2 ring-slate-300 dark:bg-slate-900 dark:ring-slate-700">
-				<header className="grid grid-cols-2 border-b-px bg-slate-300 dark:bg-slate-700 border-b-slate-300 dark:border-b-slate-700">
+		<main className="flex h-full items-center justify-center">
+			<section className="w-[500px] max-w-full rounded-lg bg-white shadow ring-2 ring-slate-300 dark:bg-slate-900 dark:ring-slate-700">
+				<header className="border-b-px grid grid-cols-2 border-b-slate-300 bg-slate-300 dark:border-b-slate-700 dark:bg-slate-700">
 					<Link
 						to="/register"
-						className={`p-3 text-center rounded-t-lg ${
+						className={`rounded-t-lg p-3 text-center ${
 							type === "register" && "bg-white dark:bg-slate-900"
 						}`}
 					>
@@ -129,14 +147,14 @@ function Auth({ type }: { type: "login" | "register" }) {
 					</Link>
 					<Link
 						to="/login"
-						className={`p-3 text-center rounded-t-lg ${
+						className={`rounded-t-lg p-3 text-center ${
 							type === "login" && "bg-white dark:bg-slate-900"
 						}`}
 					>
 						Login
 					</Link>
 				</header>
-				<article className="py-6 px-3 flex flex-col gap-4 [&>*]:w-full">
+				<article className="flex flex-col gap-4 py-6 px-3 [&>*]:w-full">
 					<Button
 						className="w-full"
 						icon={<FcGoogle />}
@@ -145,7 +163,7 @@ function Auth({ type }: { type: "login" | "register" }) {
 						Continue with Google
 					</Button>
 
-					<div className="flex gap-2 items-center">
+					<div className="flex items-center gap-2">
 						<hr className="flex-auto border-slate-400/50" />
 						<span>OR</span>
 						<hr className="flex-auto border-slate-400/50" />
@@ -258,8 +276,8 @@ export function ConfirmEmail(): JSX.Element {
 			if (!user) setOutput(<Navigate to="/login" />);
 			else if (user?.emailVerified === false) {
 				setOutput(
-					<main className="h-full flex justify-center items-center">
-						<section className="w-[500px] max-w-full bg-white rounded-lg shadow ring-2 ring-slate-300 dark:bg-slate-900 dark:ring-slate-700 p-4 flex flex-col gap-4">
+					<main className="flex h-full items-center justify-center">
+						<section className="flex w-[500px] max-w-full flex-col gap-4 rounded-lg bg-white p-4 shadow ring-2 ring-slate-300 dark:bg-slate-900 dark:ring-slate-700">
 							<IoMailUnreadOutline className="text-7xl text-primary-500" />
 							<h2 className="text-3xl font-semibold">
 								Verify your email
@@ -268,9 +286,7 @@ export function ConfirmEmail(): JSX.Element {
 								We have sand an email contains a link, follow the link
 								to verify your email.
 							</p>
-							<p className="opacity-80">
-								Then refrish the page please.
-							</p>
+							<p className="opacity-80">Then refrish the page please.</p>
 							<p className="opacity-80">
 								<span className="text-bold">NOTE:</span> If you can't
 								find it. Please check the spam.
@@ -300,4 +316,4 @@ export function HANDLE_LOGOUT() {
 	signOut(auth);
 }
 
-export default React.memo(Auth)
+export default React.memo(Auth);

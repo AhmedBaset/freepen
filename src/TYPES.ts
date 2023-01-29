@@ -1,11 +1,14 @@
 import { FieldValue, Timestamp } from "firebase/firestore";
 
 export type UserInfoProps = {
+	uid: string;
 	name: string;
-	// userName: string;
+	userName: string;
 	email: string;
 	subTitle: string;
 	photoURL: string;
+	coverPhotoURL: string;
+	bio: string;
 }
 
 export type Blog = {

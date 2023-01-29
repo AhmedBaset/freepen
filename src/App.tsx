@@ -20,6 +20,7 @@ const ConfirmEmail = lazy(() =>
 		default: module.ConfirmEmail,
 	}))
 );
+const Profile = lazy(() => import("./pages/Profile"));
 const NewBlog = lazy(() => import("./pages/NewBlog"));
 const BlogDetails = lazy(() => import("./pages/BlogDetails"));
 const NotFound = lazy(() => import("./pages/NotFound"));
@@ -33,6 +34,9 @@ function App() {
 				<Route path="login" element={<Auth type="login" />} />
 				<Route path="register" element={<Auth type="register" />} />
 				<Route path="EmailVerifying" element={<ConfirmEmail />} />
+				<Route path="profile" element={<Profile />} />
+				<Route path="profile/:id" element={<Profile />} />
+				<Route path="user/:id" element={<Profile />} />
 				<Route path="new" element={<NewBlog />} />
 
 				<Route path="blog">
