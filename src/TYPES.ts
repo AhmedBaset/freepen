@@ -1,4 +1,4 @@
-import { FieldValue, Timestamp } from "firebase/firestore";
+import { Timestamp } from "firebase/firestore";
 
 export type UserInfoProps = {
 	uid: string;
@@ -9,6 +9,7 @@ export type UserInfoProps = {
 	photoURL: string;
 	coverPhotoURL: string;
 	bio: string;
+	followers: number;
 }
 
 export type Blog = {

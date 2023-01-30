@@ -13,7 +13,6 @@ import MdEditor from "../components/MdEditor";
 function NewBlog() {
 	const [imageLink, setImageLink] = useState("");
 	const title = useRef() as React.MutableRefObject<HTMLTextAreaElement>;
-	const body = useRef() as React.MutableRefObject<HTMLTextAreaElement>;
 	const navigate = useNavigate();
 	const { newError, openModal } = useContext(AppContext);
 	const [blogBody, setBlogBody] = useState(
@@ -36,7 +35,7 @@ function NewBlog() {
 			return;
 		}
 
-		if (!title.current.value || !body.current.value) {
+		if (!title.current.value || !blogBody) {
 			openModal(
 				"Title and text are required",
 				<p className="text-gray-500">
@@ -50,7 +49,7 @@ function NewBlog() {
 		const blog: Blog = {
 			id,
 			title: title.current.value.toString(),
-			body: body.current.value.toString(),
+			body: blogBody.toString(),
 			image: imageLink,
 			authorId: auth.currentUser?.uid,
 			blogInfo: {

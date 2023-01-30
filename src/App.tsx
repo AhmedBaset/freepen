@@ -1,4 +1,4 @@
-import { Suspense, lazy } from "react";
+import React, { Suspense, lazy } from "react";
 import { createPortal } from "react-dom";
 import {
 	createBrowserRouter,
@@ -10,6 +10,7 @@ import {
 import { ImSpinner6 } from "react-icons/im";
 import { auth, db } from "./firebase-config";
 import { doc, getDoc } from "firebase/firestore";
+import { onAuthStateChanged } from "firebase/auth";
 
 const Context = lazy(() => import("./Context"));
 const Root = lazy(() => import("./pages/Root"));
@@ -26,6 +27,21 @@ const BlogDetails = lazy(() => import("./pages/BlogDetails"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 function App() {
+	const [userName, setUserName] = React.useState<string | undefined>(undefined);
+
+	React.useEffect(() => {
+		onAuthStateChanged(auth, (user) => {
+			if (user) {
+				const docRef = doc(db, "users", user.uid);
+				getDoc(docRef).then((docSnap) => {
+					if (docSnap.exists()) {
+						setUserName(docSnap.data()?.userName);
+					}
+				});
+			}
+		});
+	}, []);
+
 	// TODO: HANDLE ROUTERS
 	const router = createBrowserRouter(
 		createRoutesFromElements(
@@ -36,7 +52,7 @@ function App() {
 				<Route path="EmailVerifying" element={<ConfirmEmail />} />
 				<Route
 					path="profile"
-					element={<Navigate to={`/profile/${getUserName()}`} />}
+					element={<Navigate to={`/profile/${userName}`} />}
 				/>
 				<Route path="profile/:userName" element={<Profile />} />
 				<Route path="user/:userName" element={<Profile />} />
@@ -62,13 +78,6 @@ function App() {
 }
 
 export default App;
-
-const getUserName = async () => {
-	if (!auth.currentUser) return undefined;
-	const docRef = doc(db, "users", auth.currentUser.uid);
-	const docSnap = await getDoc(docRef);
-	return docSnap.data()?.userName;
-};
 
 export const Loading = () => {
 	return createPortal(

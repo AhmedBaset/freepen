@@ -48,10 +48,11 @@ function Auth({ type }: { type: "login" | "register" }) {
 							userName: `@${auth.user.displayName
 								?.split(" ")
 								.join("_")}_${Math.random().toString(32).slice(2)}`,
-							photoURL: auth.user.photoURL || "",
 							subTitle: "",
 							bio: "",
+							photoURL: auth.user.photoURL || "",
 							coverPhotoURL: defaultCoverImage,
+							followers: 0,
 						};
 						setDoc(docRef, userInfo).then(() => {
 							navigate("/");
@@ -106,13 +107,14 @@ function Auth({ type }: { type: "login" | "register" }) {
 					uid: createUserData.user.uid,
 					name: `${name.first} ${name.last}`,
 					email: createUserData.user.email || "",
-					photoURL: createUserData.user.photoURL || defaultImage,
 					userName: `${name.first.toLowerCase()}_${name.last.toLowerCase()}_${Math.random()
 						.toString(32)
 						.slice(2)}`,
 					subTitle: "",
 					bio: "",
+					photoURL: createUserData.user.photoURL || defaultImage,
 					coverPhotoURL: defaultCoverImage,
+					followers: 0,
 				};
 				try {
 					await setDoc(docRef, userInfo);
