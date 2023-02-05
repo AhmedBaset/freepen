@@ -57,7 +57,7 @@ function App() {
 				<Route path="profile/:userName" element={<Profile />} />
 				<Route path="user/:userName" element={<Profile />} />
 				<Route path="blogger/:userName" element={<Profile />} />
-				<Route path="new" element={<NewBlog />} />
+				<Route path="write" element={<NewBlog />} />
 
 				<Route path="blog">
 					<Route path=":id" element={<BlogDetails />} />

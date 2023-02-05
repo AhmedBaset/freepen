@@ -1,6 +1,7 @@
 import React from "react";
-import Navbar from "../layouts/Navbar";
+import Navbar from "../components/Navbar";
 import { Outlet } from "react-router-dom";
+import SidebarNavigation from "../components/SidebarNavigation";
 
 function Root() {
 	return (
@@ -8,8 +9,11 @@ function Root() {
 			<div className="min-h-screen">
 				<div className="flex h-screen flex-col overflow-auto dark:bg-slate-800 dark:text-white">
 					<Navbar />
-					<div className="flex-auto">
-						<Outlet />
+					<div className="flex-auto flex">
+						<SidebarNavigation />
+						<div className="flex-auto">
+							<Outlet />
+						</div>
 					</div>
 				</div>
 			</div>

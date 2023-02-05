@@ -10,6 +10,7 @@ export type UserInfoProps = {
 	coverPhotoURL: string;
 	bio: string;
 	followers: number;
+	followings: string[];
 }
 
 export type Blog = {

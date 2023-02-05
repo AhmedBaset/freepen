@@ -63,3 +63,12 @@ select:-webkit-autofill:focus {
 		transition: background-color 5000s ease-in-out 0s;
 	}
 }
+
+@keyframes progress {
+	0% {
+		width: 0%;
+	}
+	100% {
+		width: 100%;
+	}
+}

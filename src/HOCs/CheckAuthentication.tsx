@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useLayoutEffect } from "react";
 import Button from "../components/Button";
 import { auth } from "../firebase-config";
 import { AiOutlineLogin, AiOutlineUserAdd } from "react-icons/ai";
@@ -11,9 +11,10 @@ function CheckAuthentication({ children }: Props) : JSX.Element {
 	const [isAuth, setIsAuth] = useState<User | null | "loading">("loading");
 	const navigate = useNavigate();
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		onAuthStateChanged(auth, (user) => {
 			setIsAuth(() => user);
+			console.log(isAuth)
 		});
 	}, []);
 

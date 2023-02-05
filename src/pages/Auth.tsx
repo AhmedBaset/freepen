@@ -53,6 +53,7 @@ function Auth({ type }: { type: "login" | "register" }) {
 							photoURL: auth.user.photoURL || "",
 							coverPhotoURL: defaultCoverImage,
 							followers: 0,
+							followings: [],
 						};
 						setDoc(docRef, userInfo).then(() => {
 							navigate("/");
@@ -115,6 +116,7 @@ function Auth({ type }: { type: "login" | "register" }) {
 					photoURL: createUserData.user.photoURL || defaultImage,
 					coverPhotoURL: defaultCoverImage,
 					followers: 0,
+					followings: [],
 				};
 				try {
 					await setDoc(docRef, userInfo);
