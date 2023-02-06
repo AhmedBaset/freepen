@@ -2,6 +2,7 @@ import { collection, getDocs, query, where } from "firebase/firestore";
 import React from "react";
 import { BiSearchAlt } from "react-icons/bi";
 import ListItemBlog from "../components/ListItemBlog";
+import { AppContext } from "../Context";
 import { db } from "../firebase-config";
 import { Blog } from "../TYPES";
 
@@ -11,9 +12,16 @@ function Search() {
 	const [results, setResults] = React.useState<Blog[]>([]);
 	const [error, setError] = React.useState("");
 	const input = React.useRef() as React.MutableRefObject<HTMLInputElement>;
+	const { setCurrentPage } = React.useContext(AppContext);
+
+	React.useEffect(() => {
+		document.title = "Search | Blog App";
+		setCurrentPage("SEARCH");
+	}, []);
 
 	React.useEffect(() => {
 		input.current?.focus();
+		console.log(input);
 
 		// README: This is just the beginning. When the app grow up I am using a search engine like algolia or elastic search.
 		(async () => {
@@ -37,13 +45,22 @@ function Search() {
 			return;
 		} else {
 			const searchWordsArray = searchWords.split(" ");
-			const searchResults : Blog[] = []
+			const searchResults: Blog[] = [];
 			searchWordsArray.forEach((word) => {
-				searchResults.push(...allBlogs.filter((blog) => blog.title?.toLowerCase().includes(word.toLowerCase()) || blog.body?.toLowerCase().includes(word.toLowerCase())))
-			})
-			setResults(searchResults)
-			setError("")
-			console.log(results)
+				searchResults.push(
+					...allBlogs.filter(
+						(blog) =>
+							blog.title?.toLowerCase().includes(word.toLowerCase()) ||
+							blog.body?.toLowerCase().includes(word.toLowerCase())
+					)
+				);
+			});
+			setResults(searchResults);
+			setError(
+				searchResults.length === 0
+					? "No results found. Try again please"
+					: ""
+			);
 		}
 	};
 

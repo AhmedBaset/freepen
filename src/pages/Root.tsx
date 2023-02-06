@@ -9,7 +9,7 @@ function Root() {
 			<div className="min-h-screen">
 				<div className="flex h-screen flex-col overflow-auto dark:bg-slate-800 dark:text-white">
 					<Navbar />
-					<div className="flex-auto flex container">
+					<div className="flex-auto container grid grid-cols-[auto_1fr]">
 						<SidebarNavigation />
 						<div className="flex-auto">
 							<Outlet />

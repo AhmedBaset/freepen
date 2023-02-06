@@ -16,7 +16,11 @@ type ContextProps = {
 		title: string,
 		children: JSX.Element,
 	) => void;
-};
+	currentPage: Pages;
+	setCurrentPage: React.Dispatch<React.SetStateAction<Pages>>;
+	};
+
+type Pages = "HOME" | "LOGIN" | "PROFILE" | "WRITE" | "SEARCH" | "";
 
 export const AppContext = createContext<ContextProps>({
 	userInfo: null,
@@ -25,11 +29,14 @@ export const AppContext = createContext<ContextProps>({
 	newError: (error: any) => null,
 	openModal: (title: string, children: JSX.Element, autoClose?: boolean) =>
 		null,
+	currentPage: "",
+	setCurrentPage: () => null,
 });
 
 type Props = {
 	children: React.ReactNode;
 };
+
 
 function Context({ children }: Props) {
 	const [userInfo, setUserInfo] = useState<UserInfoProps | null>(null);
@@ -38,6 +45,7 @@ function Context({ children }: Props) {
 		title: "",
 		children: <></>
 	});
+	const [currentPage, setCurrentPage] = useState<Pages>("");
 
 	onAuthStateChanged(auth, async () => {
 		if (auth?.currentUser?.uid) {
@@ -73,6 +81,8 @@ function Context({ children }: Props) {
 					setNotifications,
 					newError,
 					openModal,
+					currentPage,
+					setCurrentPage
 				}}
 			>
 				{children}

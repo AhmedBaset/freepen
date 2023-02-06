@@ -15,8 +15,9 @@ import { Blog } from "../TYPES";
 const Alert = lazy(() => import("../components/Alert"));
 
 function Home() {
+	
 	const [authUser, setAuthUser] = useState<User | null>(null);
-	const { userInfo } = useContext(AppContext);
+	const { userInfo, setCurrentPage } = useContext(AppContext);
 	const navigate = useNavigate();
 	const [homeStyle, setHomeStyle] = useState<"everyBody" | "followings">(
 		"everyBody"
@@ -25,9 +26,9 @@ function Home() {
 		"blogs",
 		{ limit: 10 },
 		orderBy("blogInfo.readsCount", "desc")
-	);
-	const [blogsLimit, setBlogsLimit] = useState(1);
-	const [blogs, blogsError, blogsLoading] = useGetDocs<Blog>(
+		);
+		const [blogsLimit, setBlogsLimit] = useState(1);
+		const [blogs, blogsError, blogsLoading] = useGetDocs<Blog>(
 		"blogs",
 		{ limit: blogsLimit },
 		orderBy("blogInfo.createdAt", "desc")
@@ -36,6 +37,8 @@ function Home() {
 	const loadMore = useRef() as React.MutableRefObject<HTMLDivElement>;
 
 	useEffect(() => {
+		setCurrentPage("HOME");
+
 		const unSubscribe = onAuthStateChanged(auth, (user) => setAuthUser(user));
 
 		// trendsError
@@ -46,6 +49,9 @@ function Home() {
 				setBlogsLimit((prev) => prev + 1);
 			}
 		});
+
+
+		document.title = "Free Pen - Home"
 
 		observer.observe(loadMore?.current);
 
