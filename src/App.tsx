@@ -23,11 +23,14 @@ const ConfirmEmail = lazy(() =>
 );
 const Profile = lazy(() => import("./pages/Profile"));
 const NewBlog = lazy(() => import("./pages/NewBlog"));
+const Search = lazy(() => import("./pages/Search"));
 const BlogDetails = lazy(() => import("./pages/BlogDetails"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 function App() {
-	const [userName, setUserName] = React.useState<string | undefined>(undefined);
+	const [userName, setUserName] = React.useState<string | undefined>(
+		undefined
+	);
 
 	React.useEffect(() => {
 		onAuthStateChanged(auth, (user) => {
@@ -58,6 +61,7 @@ function App() {
 				<Route path="user/:userName" element={<Profile />} />
 				<Route path="blogger/:userName" element={<Profile />} />
 				<Route path="write" element={<NewBlog />} />
+				<Route path="search" element={<Search />} />
 
 				<Route path="blog">
 					<Route path=":id" element={<BlogDetails />} />
