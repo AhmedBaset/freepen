@@ -18,55 +18,30 @@ function SidebarNavigation() {
 				<AiOutlineLogin
 					name="LOGIN"
 					onClick={() => navigate("/login")}
-					onLoad={(e) =>
-						e.currentTarget.classList.toggle(
-							"is-active",
-							e.currentTarget.getAttribute("name") === currentPage
-						)
-					}
+					className={currentPage === "LOGIN" ? "is-active" : ""}
 				/>
 			)}
 			<AiOutlineHome
 				name="HOME"
 				onClick={() => navigate("/")}
-				onLoad={(e) =>
-					e.currentTarget.classList.toggle(
-						"is-active",
-						e.currentTarget.getAttribute("name") === currentPage
-					)
-				}
+				className={currentPage === "HOME" ? "is-active" : ""}
 			/>
 			<BsPencilSquare
 				name="WRITE"
 				onClick={() => navigate("/write")}
-				onLoad={(e) =>
-					e.currentTarget.classList.toggle(
-						"is-active",
-						e.currentTarget.getAttribute("name") === currentPage
-					)
-				}
+				className={currentPage === "WRITE" ? "is-active" : ""}
 			/>
 			<IoTrendingUp name="" onClick={() => navigate("/")} />
 			<BiSearchAlt
 				name="SEARCH"
 				onClick={() => navigate("/search")}
-				onLoad={(e) =>
-					e.currentTarget.classList.toggle(
-						"is-active",
-						e.currentTarget.getAttribute("name") === currentPage
-					)
-				}
+				className={currentPage === "SEARCH" ? "is-active" : ""}
 			/>
 			{auth.currentUser && (
 				<CiUser
 					name="PROFILE"
 					onClick={() => navigate("/profile")}
-					onLoad={(e) =>
-						e.currentTarget.classList.toggle(
-							"is-active",
-							e.currentTarget.getAttribute("name") === currentPage
-						)
-					}
+					className={currentPage === "PROFILE" ? "is-active" : ""}
 				/>
 			)}
 		</aside>

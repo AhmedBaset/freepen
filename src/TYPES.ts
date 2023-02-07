@@ -28,6 +28,18 @@ export type Blog = {
 	};
 };
 
+export type CommentProps = {
+	id: string;
+	blogId: string | undefined;
+	text: string | undefined;
+	authorId: string | undefined;
+	commentInfo: {
+		createdAt: Timestamp;
+		readsCount: number;
+		likes: string[];
+	};
+};
+
 export type NotificationType = {
 	type: "info" | "success" | "error";
 	id: number;
