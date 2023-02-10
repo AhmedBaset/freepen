@@ -20,7 +20,7 @@ type ContextProps = {
 	setCurrentPage: React.Dispatch<React.SetStateAction<Pages>>;
 	};
 
-type Pages = "HOME" | "LOGIN" | "PROFILE" | "WRITE" | "SEARCH" | "";
+type Pages = "HOME" | "LOGIN" | "PROFILE" | "WRITE" | "SEARCH" | "AUTH" | "";
 
 export const AppContext = createContext<ContextProps>({
 	userInfo: null,

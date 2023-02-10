@@ -1,11 +1,18 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../components/Button";
+import { AppContext } from "../Context";
 
-type Props = {};
-
-function NotFound({}: Props) {
+function NotFound() {
 	const navigate = useNavigate();
+	const {setCurrentPage} = useContext(AppContext)
+
+	useEffect(()=> {
+		setCurrentPage("")
+		document.title = "FreePen - Page is not found"
+	}, [])
+
+
 	return (
 		<main className="container space-y-4 flex flex-col justify-center h-full">
 			<h2 className="text-7xl text-pink-500 font-black flex">

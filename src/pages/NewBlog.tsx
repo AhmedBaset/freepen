@@ -1,4 +1,4 @@
-import React, { useState, memo, useContext, useRef } from "react";
+import React, { useState, memo, useContext, useRef, useEffect } from "react";
 import CheckAuthentication from "./../HOCs/CheckAuthentication";
 import Button from "../components/Button";
 
@@ -14,12 +14,17 @@ function NewBlog() {
 	const [imageLink, setImageLink] = useState("");
 	const title = useRef() as React.MutableRefObject<HTMLTextAreaElement>;
 	const navigate = useNavigate();
-	const { newError, openModal } = useContext(AppContext);
+	const { newError, openModal, setCurrentPage } = useContext(AppContext);
 	const [blogBody, setBlogBody] = useState(
 		`# ${title.current?.value || "Title"} \n \n Good writing...`
 	);
 
-	const id = `${Math.random().toString(32).substring(2, 12)}`;
+	let id: string = "";
+	useEffect(() => {
+		setCurrentPage("WRITE");
+		document.title = `FreePen - write a story`
+		id = `${Math.random().toString(32).substring(2, 12)}`;
+	}, [])
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
@@ -91,9 +96,8 @@ function NewBlog() {
 							var height = element.currentTarget.scrollHeight; // get the height of the text area
 							element.currentTarget.style.height = lineHeight + "px"; // set the height to 3 lines of text
 							var numberOfLines = Math.floor(height / lineHeight);
-							element.currentTarget.style.height = `${
-								numberOfLines * lineHeight + 32 // add 16 + 16px for padding top and bottom
-							}px`;
+							element.currentTarget.style.height = `${numberOfLines * lineHeight + 32 // add 16 + 16px for padding top and bottom
+								}px`;
 						}}
 					></textarea>
 

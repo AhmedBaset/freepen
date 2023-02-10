@@ -1,4 +1,4 @@
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { collection, getDocs} from "firebase/firestore";
 import React from "react";
 import { BiSearchAlt } from "react-icons/bi";
 import ListItemBlog from "../components/ListItemBlog";
@@ -17,6 +17,7 @@ function Search() {
 	React.useEffect(() => {
 		document.title = "Search | Blog App";
 		setCurrentPage("SEARCH");
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	React.useEffect(() => {

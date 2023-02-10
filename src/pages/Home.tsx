@@ -15,7 +15,6 @@ import { Blog } from "../TYPES";
 const Alert = lazy(() => import("../components/Alert"));
 
 function Home() {
-	
 	const [authUser, setAuthUser] = useState<User | null>(null);
 	const { userInfo, setCurrentPage } = useContext(AppContext);
 	const navigate = useNavigate();
@@ -38,6 +37,7 @@ function Home() {
 
 	useEffect(() => {
 		setCurrentPage("HOME");
+		document.title = "FreePen - Home"
 
 		const unSubscribe = onAuthStateChanged(auth, (user) => setAuthUser(user));
 

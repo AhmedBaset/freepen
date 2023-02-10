@@ -20,13 +20,18 @@ import NotFound from "./NotFound";
 
 function Profile(): JSX.Element {
 	const { userName } = useParams();
-	const { userInfo: currentUserInfo } = useContext(AppContext);
+	const { userInfo: currentUserInfo, setCurrentPage } = useContext(AppContext);
 	const [userInfo, setUserInfo] = useState<
 		UserInfoProps | "NOT_FOUND" | "LOADING"
 	>("LOADING");
 	const [blogs, setBlogs] = useState<Blog[]>([]);
 	const [isMyProfile, setIsMyProfile] = useState(false);
 	const navigate = useNavigate();
+
+	useEffect(() => {
+		document.title = `FreePen - ${typeof userInfo !== "string" && userInfo.name}`;
+		setCurrentPage(() => isMyProfile ? "PROFILE" : "")
+	}, [typeof userInfo !== "string" && userInfo])
 
 	// Functions
 	const getUserId = async (userName: string) => {
@@ -94,6 +99,7 @@ function Profile(): JSX.Element {
 		return () => {
 			setUserInfo("LOADING");
 		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return (

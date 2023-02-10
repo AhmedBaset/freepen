@@ -1,4 +1,4 @@
-import { useEffect, useState, memo } from "react";
+import { useEffect, useState, memo, useContext } from "react";
 import {
 	collection,
 	doc,
@@ -17,6 +17,7 @@ import { marked } from "marked";
 import Comment from "../components/Comment";
 import { AiFillHeart, AiOutlineHeart, AiOutlineSend } from "react-icons/ai";
 import { sanitize } from "../HOCs/sanitize";
+import { AppContext } from "../Context";
 
 function BlogDetails() {
 	const { id } = useParams();
@@ -24,11 +25,13 @@ function BlogDetails() {
 	const [author, setAuthor] = useState<UserInfoProps | null>(null);
 	const [comments, setComments] = useState<CommentProps[]>([]);
 	const [blogText, setBlogText] = useState<string>("");
+	const {setCurrentPage} = useContext(AppContext)
 	// eslint-disable-next-line
 	const [error, setError] = useState("");
 
 	useEffect(() => {
-		document.title = `FreePen ${blog?.title}`;
+		document.title = `FreePen - ${blog?.title}`;
+		setCurrentPage("")
 	}, [blog?.title]);
 
 	useEffect(() => {

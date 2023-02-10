@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import { FcGoogle } from "react-icons/fc";
@@ -19,6 +19,7 @@ import { IoMailUnreadOutline } from "react-icons/io5";
 import { UserInfoProps } from "../TYPES";
 import { AiOutlineUser } from "react-icons/ai";
 import { getDownloadURL, ref } from "firebase/storage";
+import { AppContext } from "../Context";
 //! import { useNotification } from "../Hooks/useNotification";
 
 function Auth({ type }: { type: "login" | "register" }) {
@@ -26,8 +27,14 @@ function Auth({ type }: { type: "login" | "register" }) {
 	const [password, setPassword] = useState("");
 	const [name, setName] = useState({ first: "", last: "" });
 	const navigate = useNavigate();
+	const {setCurrentPage} = useContext(AppContext)
 
 	//! const { newNotification } = useNotification();
+
+	useEffect(()=> {
+		document.title = `FreePen - Login or Create account for free`;
+		setCurrentPage("AUTH")
+	}, [])
 
 	// TODO: SIGN IN WITH GOOGLE
 	const SIGN_IN_WITH_GOOGLE = () => {
