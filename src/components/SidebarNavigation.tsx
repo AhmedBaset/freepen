@@ -13,7 +13,7 @@ function SidebarNavigation() {
 	const { currentPage } = useContext(AppContext);
 
 	return (
-		<aside className="md:[&_svg]:text-md flex w-12 flex-col items-center gap-3 p-1 py-3 pr-0 md:w-20 [&_svg]:cursor-pointer [&_svg]:rounded [&_svg]:bg-primary-500/20 [&_svg]:p-1 [&_svg]:text-3xl md:[&_svg]:p-2 [&_svg:hover]:bg-primary-400 [&_svg.is-active]:bg-primary-500">
+		<aside className="fixed inset-x-0 ring-1 md:ring-0 ring-slate-400/20 bottom-0 flex flex-row items-center justify-center gap-3 p-3 shadow backdrop-blur max-md:row-start-2 md:relative md:flex-col md:justify-start [&_svg]:cursor-pointer [&_svg]:rounded [&_svg]:bg-primary-500/20 [&_svg]:p-2 [&_svg]:text-3xl [&_svg:hover]:bg-primary-400 [&_svg.is-active]:bg-primary-500">
 			{!auth.currentUser && (
 				<AiOutlineLogin
 					name="LOGIN"

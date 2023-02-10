@@ -11,7 +11,7 @@ export type UserInfoProps = {
 	bio: string;
 	followers: number;
 	followings: string[];
-}
+};
 
 export type Blog = {
 	id: string;
@@ -22,7 +22,7 @@ export type Blog = {
 	blogInfo: {
 		createdAt: Timestamp;
 		readsCount: number;
-		likesCount: number;
+		likes: string[];
 		sharesCount: number;
 		commentsCount: number;
 	};
@@ -45,6 +45,6 @@ export type NotificationType = {
 	id: number;
 	message: string;
 	image: string | React.ReactElement;
-	link: string | null
-	haveRead: boolean
+	link: string | null;
+	haveRead: boolean;
 };

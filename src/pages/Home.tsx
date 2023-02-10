@@ -156,8 +156,8 @@ function Home() {
 						{(homeStyle === "everyBody" ? blogs : followingsBlogs)
 							.length === 0 && (
 							<div className="p-4 text-center">
-								<h1 className="flex gap-2 text-xl">
-									<CiWarning className="text-5xl" /> There seems to be
+								<h1 className="text-xl text-center align-center">
+									<CiWarning className="inline-block" /> There seems to be
 									nothing new to read. Follow more bloggers or refresh
 									the page.
 								</h1>

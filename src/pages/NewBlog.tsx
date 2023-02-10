@@ -55,7 +55,7 @@ function NewBlog() {
 			blogInfo: {
 				createdAt: Timestamp.fromDate(new Date()),
 				readsCount: 0,
-				likesCount: 0,
+				likes: [],
 				sharesCount: 0,
 				commentsCount: 0,
 			},
